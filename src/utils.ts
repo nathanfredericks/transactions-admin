@@ -44,7 +44,7 @@ export async function getPayees() {
 }
 
 export async function getOverride(merchant: string) {
-  const dynamoDBClient = new DynamoDBClient({});
+  const dynamoDBClient = new DynamoDBClient(awsConfiguration);
   const { Item } = await dynamoDBClient.send(
     new GetItemCommand({
       TableName: "TransactionOverrides",
