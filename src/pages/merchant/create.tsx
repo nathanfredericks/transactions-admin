@@ -6,14 +6,16 @@ import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as yup from "yup";
 import MerchantForm from "../../components/MerchantForm";
-import {InitialValues} from "@/types";
-import {getOverrides, getPayees} from "@/utils";
+import { InitialValues } from "@/types";
+import { getOverrides, getPayees } from "@/utils";
 import Navbar from "@/components/Navbar";
 
 export const getServerSideProps = (async () => {
   try {
-    const overrides = await getOverrides()
-    const merchants = overrides.map(({ merchant }) => merchant?.toUpperCase()).filter((merchant): merchant is string => !!merchant)
+    const overrides = await getOverrides();
+    const merchants = overrides
+      .map(({ merchant }) => merchant?.toUpperCase())
+      .filter((merchant): merchant is string => !!merchant);
 
     const payees = await getPayees();
     return { props: { errorCode: null, merchants, payees } };
@@ -55,7 +57,16 @@ export default function Create({
   }
 
   const schema = yup.object({
-    merchant: yup.string().required().max(200).label("Merchant").test("unique", "Merchant already exists", (value) => !merchants.includes(value.toUpperCase())),
+    merchant: yup
+      .string()
+      .required()
+      .max(200)
+      .label("Merchant")
+      .test(
+        "unique",
+        "Merchant already exists",
+        (value) => !merchants.includes(value.toUpperCase()),
+      ),
     payee: yup.string().required().label("Payee"),
   });
 

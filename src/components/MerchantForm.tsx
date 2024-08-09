@@ -21,7 +21,7 @@ export default function MerchantForm(props: Props) {
           type="text"
           name="merchant"
           className="font-monospace"
-          style={{textTransform: "uppercase"}}
+          style={{ textTransform: "uppercase" }}
           onChange={handleChange}
           value={values.merchant}
           disabled={isEditing}

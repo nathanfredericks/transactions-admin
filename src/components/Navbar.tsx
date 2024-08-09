@@ -1,4 +1,4 @@
-import {Container, Navbar as ReactBootstrapNavbar} from "react-bootstrap";
+import { Container, Navbar as ReactBootstrapNavbar } from "react-bootstrap";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -10,5 +10,5 @@ export default function Navbar() {
         </Link>
       </Container>
     </ReactBootstrapNavbar>
-  )
+  );
 }

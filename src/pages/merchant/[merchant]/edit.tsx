@@ -1,13 +1,13 @@
 import Head from "next/head";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { Container , Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as yup from "yup";
 import MerchantForm from "../../../components/MerchantForm";
-import {InitialValues, Override} from "@/types";
-import {getOverride, getPayees} from "@/utils";
+import { InitialValues, Override } from "@/types";
+import { getOverride, getPayees } from "@/utils";
 import Navbar from "@/components/Navbar";
 
 export const getServerSideProps = (async (context) => {
@@ -50,10 +50,13 @@ export default function Edit({
   }
 
   async function updateMerchant(values: InitialValues) {
-    const response = await fetch(`/api/merchant/${encodeURIComponent(override?.merchant || "")}`, {
-      method: "PATCH",
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `/api/merchant/${encodeURIComponent(override?.merchant || "")}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(values),
+      },
+    );
     if (!response.ok) {
       alert("Error updating merchant");
     } else {
@@ -62,9 +65,12 @@ export default function Edit({
   }
 
   async function deleteMerchant() {
-    const response = await fetch(`/api/merchant/${encodeURIComponent(override?.merchant || "")}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `/api/merchant/${encodeURIComponent(override?.merchant || "")}`,
+      {
+        method: "DELETE",
+      },
+    );
     if (!response.ok) {
       alert("Error deleting merchant");
     } else {

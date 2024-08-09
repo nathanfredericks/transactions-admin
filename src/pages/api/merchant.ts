@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { z } from "zod";
-import { parseJsonPreprocessor } from "@/utils";
+import { awsConfiguration, parseJsonPreprocessor } from "@/utils";
 
 export const schema = z.object({
   merchant: z.string(),
@@ -16,7 +16,7 @@ export default async function handler(
   try {
     if (req.method === "POST") {
       const { merchant, payee } = await jsonSchema.parseAsync(req.body);
-      const dynamoDBClient = new DynamoDBClient();
+      const dynamoDBClient = new DynamoDBClient(awsConfiguration);
       await dynamoDBClient.send(
         new PutItemCommand({
           TableName: "TransactionOverrides",

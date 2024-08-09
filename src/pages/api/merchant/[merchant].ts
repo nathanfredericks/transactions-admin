@@ -5,7 +5,7 @@ import {
   UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { z } from "zod";
-import { parseJsonPreprocessor } from "@/utils";
+import { awsConfiguration, parseJsonPreprocessor } from "@/utils";
 
 export const schema = z.object({
   payee: z.string(),
@@ -17,11 +17,11 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const merchant = req.query.merchant as string;
+  const dynamoDBClient = new DynamoDBClient(awsConfiguration);
 
   try {
     if (req.method === "PATCH") {
       const { payee } = await jsonSchema.parseAsync(req.body);
-      const dynamoDBClient = new DynamoDBClient();
       await dynamoDBClient.send(
         new UpdateItemCommand({
           TableName: "TransactionOverrides",
@@ -39,7 +39,6 @@ export default async function handler(
         payee,
       });
     } else if (req.method === "DELETE") {
-      const dynamoDBClient = new DynamoDBClient();
       await dynamoDBClient.send(
         new DeleteItemCommand({
           TableName: "TransactionOverrides",

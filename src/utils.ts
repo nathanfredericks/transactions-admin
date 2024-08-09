@@ -1,6 +1,18 @@
-import {z, ZodIssueCode} from "zod";
+import { z, ZodIssueCode } from "zod";
 import * as ynab from "ynab";
-import {DynamoDBClient, GetItemCommand, ScanCommand} from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBClient,
+  GetItemCommand,
+  ScanCommand,
+} from "@aws-sdk/client-dynamodb";
+
+export const awsConfiguration = {
+  region: process.env.REGION || "",
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.SECRET_ACCESS_KEY || "",
+  },
+};
 
 export function parseJsonPreprocessor(value: any, ctx: z.RefinementCtx) {
   if (typeof value === "string") {
@@ -18,9 +30,13 @@ export function parseJsonPreprocessor(value: any, ctx: z.RefinementCtx) {
 
 export async function getPayees() {
   const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN || "");
-  const { data } = await ynabAPI.payees.getPayees(process.env.YNAB_BUDGET_ID || "", undefined, {
-    next: { revalidate: 300 },
-  });
+  const { data } = await ynabAPI.payees.getPayees(
+    process.env.YNAB_BUDGET_ID || "",
+    undefined,
+    {
+      next: { revalidate: 300 },
+    },
+  );
   return data.payees
     .filter((payee) => !payee.transfer_account_id && !payee.deleted)
     .map((payee) => payee.name)
@@ -28,7 +44,7 @@ export async function getPayees() {
 }
 
 export async function getOverride(merchant: string) {
-  const dynamoDBClient = new DynamoDBClient();
+  const dynamoDBClient = new DynamoDBClient({});
   const { Item } = await dynamoDBClient.send(
     new GetItemCommand({
       TableName: "TransactionOverrides",
@@ -44,12 +60,14 @@ export async function getOverride(merchant: string) {
 }
 
 export async function getOverrides() {
-  const dynamoDbClient = new DynamoDBClient();
+  const dynamoDbClient = new DynamoDBClient(awsConfiguration);
   const { Items } = await dynamoDbClient.send(
     new ScanCommand({ TableName: "TransactionOverrides" }),
   );
-  return Items?.map((item) => ({
-    merchant: item.merchant.S,
-    payee: item.payee.S,
-  })) ?? [];
+  return (
+    Items?.map((item) => ({
+      merchant: item.merchant.S,
+      payee: item.payee.S,
+    })) ?? []
+  );
 }

@@ -6,8 +6,8 @@ import Image from "next/image";
 import shopIcon from "bootstrap-icons/icons/shop.svg";
 import personIcon from "bootstrap-icons/icons/person-fill.svg";
 import { useRouter } from "next/router";
-import {Override} from "@/types";
-import {getOverrides} from "@/utils";
+import { Override } from "@/types";
+import { getOverrides } from "@/utils";
 import Navbar from "@/components/Navbar";
 
 export const getServerSideProps = (async () => {
@@ -20,9 +20,12 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   async function deleteMerchant(merchant: string) {
-    const response = await fetch(`/api/merchant/${encodeURIComponent(merchant)}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `/api/merchant/${encodeURIComponent(merchant)}`,
+      {
+        method: "DELETE",
+      },
+    );
     if (!response.ok) {
       alert("Error deleting merchant");
     } else {
@@ -61,7 +64,9 @@ export default function Home({
                   </span>
                 </div>
                 <div className="d-inline-flex gap-2">
-                  <Link href={`/merchant/${encodeURIComponent(merchant || "")}/edit`}>
+                  <Link
+                    href={`/merchant/${encodeURIComponent(merchant || "")}/edit`}
+                  >
                     <Button variant="secondary">Edit</Button>
                   </Link>
                   <Button
