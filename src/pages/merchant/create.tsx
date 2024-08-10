@@ -7,17 +7,17 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import MerchantForm from "../../components/MerchantForm";
 import { InitialValues } from "@/types";
-import { getOverrides, getPayees } from "@/utils";
+import { getYNABPayees } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import {getOverrides} from "@/lib/override";
 
 export const getServerSideProps = (async () => {
   try {
     const overrides = await getOverrides();
     const merchants = overrides
-      .map(({ merchant }) => merchant?.toUpperCase())
+      .map(({ merchant }) => merchant)
       .filter((merchant): merchant is string => !!merchant);
-
-    const payees = await getPayees();
+    const payees = await getYNABPayees();
     return { props: { errorCode: null, merchants, payees } };
   } catch (error) {
     console.error(error);

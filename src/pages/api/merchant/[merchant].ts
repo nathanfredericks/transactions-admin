@@ -1,12 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  DeleteItemCommand,
-  DynamoDBClient,
-  UpdateItemCommand,
-} from "@aws-sdk/client-dynamodb";
 import { z } from "zod";
-import { awsConfiguration, parseJsonPreprocessor } from "@/utils";
-
+import {parseJsonPreprocessor} from "@/lib/utils";
+import {deleteOverride, updateOverride} from "@/lib/override";
 export const schema = z.object({
   payee: z.string(),
 });
@@ -17,36 +12,17 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const merchant = req.query.merchant as string;
-  const dynamoDBClient = new DynamoDBClient(awsConfiguration);
 
   try {
     if (req.method === "PATCH") {
       const { payee } = await jsonSchema.parseAsync(req.body);
-      await dynamoDBClient.send(
-        new UpdateItemCommand({
-          TableName: "TransactionOverrides",
-          Key: {
-            merchant: { S: merchant.toUpperCase() },
-          },
-          UpdateExpression: "SET payee = :payee",
-          ExpressionAttributeValues: {
-            ":payee": { S: payee },
-          },
-        }),
-      );
+      await updateOverride(merchant, payee);
       res.status(200).json({
         merchant,
         payee,
       });
     } else if (req.method === "DELETE") {
-      await dynamoDBClient.send(
-        new DeleteItemCommand({
-          TableName: "TransactionOverrides",
-          Key: {
-            merchant: { S: merchant },
-          },
-        }),
-      );
+      await deleteOverride(merchant);
       res.status(200).json({});
     } else {
       res.status(405).json({});

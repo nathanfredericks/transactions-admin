@@ -7,15 +7,16 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import MerchantForm from "../../../components/MerchantForm";
 import { InitialValues, Override } from "@/types";
-import { getOverride, getPayees } from "@/utils";
+import { getYNABPayees } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import {getOverride} from "@/lib/override";
 
 export const getServerSideProps = (async (context) => {
   const merchant = context.query.merchant as string;
 
   try {
     const override = await getOverride(merchant);
-    const payees = await getPayees();
+    const payees = await getYNABPayees();
     if (
       !payees?.some((payee) => payee === override?.payee) &&
       override?.payee

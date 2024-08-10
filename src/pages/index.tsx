@@ -7,11 +7,11 @@ import shopIcon from "bootstrap-icons/icons/shop.svg";
 import personIcon from "bootstrap-icons/icons/person-fill.svg";
 import { useRouter } from "next/router";
 import { Override } from "@/types";
-import { getOverrides } from "@/utils";
 import Navbar from "@/components/Navbar";
+import {getOverrides} from "@/lib/override";
 
 export const getServerSideProps = (async () => {
-  const overrides = await getOverrides();
+  const overrides = await getOverrides() ?? [];
   return { props: { overrides } };
 }) satisfies GetServerSideProps<{ overrides: Override[] }>;
 
@@ -41,7 +41,7 @@ export default function Home({
       </Head>
       <Navbar />
       <main>
-        <Container className="d-flex flex-column gap-2 mt-2">
+        <Container className="d-flex flex-column gap-2 mt-2 mb-4">
           <div className="d-flex justify-content-between align-items-center">
             <h1>Overrides</h1>
             <Link href="/merchant/create">
