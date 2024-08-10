@@ -1,8 +1,7 @@
-import { withAuth } from "next-auth/middleware";
+import { withMiddlewareAuthRequired } from "@auth0/nextjs-auth0/edge";
 
-export default withAuth({
-  pages: {
-    signIn: "/auth/signin",
-  },
-  secret: process.env.TRANSACTIONS_AUTH_SECRET || "",
-});
+export default withMiddlewareAuthRequired();
+
+export const config = {
+  matcher: "/((?!api/auth/logout).*)",
+};

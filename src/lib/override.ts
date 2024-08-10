@@ -7,13 +7,16 @@ import {
   UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 
-export const awsConfiguration = {
-  region: process.env.TRANSACTIONS_AWS_REGION || "",
-  credentials: {
-    accessKeyId: process.env.TRANSACTIONS_AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.TRANSACTIONS_AWS_SECRET_ACCESS_KEY || "",
-  },
-};
+export const awsConfiguration =
+  process.env.NODE_ENV === "production"
+    ? {
+        region: process.env.TRANSACTIONS_AWS_REGION || "",
+        credentials: {
+          accessKeyId: process.env.TRANSACTIONS_AWS_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.TRANSACTIONS_AWS_SECRET_ACCESS_KEY || "",
+        },
+      }
+    : {};
 export const dynamoDBClient = new DynamoDBClient(awsConfiguration);
 
 export async function getOverrides() {

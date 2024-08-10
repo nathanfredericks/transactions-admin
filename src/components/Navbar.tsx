@@ -1,14 +1,17 @@
-import { Container, Navbar as ReactBootstrapNavbar } from "react-bootstrap";
+import { Container, Navbar as NavigationBar, Button } from "react-bootstrap";
 import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <ReactBootstrapNavbar className="bg-body-tertiary">
+    <NavigationBar className="bg-body-tertiary">
       <Container>
         <Link href="/" legacyBehavior passHref>
-          <ReactBootstrapNavbar.Brand>Transactions</ReactBootstrapNavbar.Brand>
+          <NavigationBar.Brand>Transactions</NavigationBar.Brand>
+        </Link>
+        <Link href="/api/auth/logout">
+          <Button variant="outline-secondary">Logout</Button>
         </Link>
       </Container>
-    </ReactBootstrapNavbar>
+    </NavigationBar>
   );
 }

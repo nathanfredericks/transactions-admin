@@ -4,34 +4,28 @@ import { Container } from "react-bootstrap";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
+import type { FormikHelpers } from "formik";
 import * as yup from "yup";
 import MerchantForm from "../../components/MerchantForm";
 import { InitialValues } from "@/types";
 import { getYNABPayees } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import { getOverrides } from "@/lib/override";
 
 export const getServerSideProps = (async () => {
   try {
-    const overrides = (await getOverrides()) ?? [];
-    const merchants = overrides
-      .map(({ merchant }) => merchant)
-      .filter((merchant): merchant is string => !!merchant);
     const payees = await getYNABPayees();
-    return { props: { errorCode: null, merchants, payees } };
+    return { props: { errorCode: null, payees } };
   } catch (error) {
     console.error(error);
     return { props: { errorCode: 500, merchants: null, payees: null } };
   }
 }) satisfies GetServerSideProps<{
   errorCode: number | null;
-  merchants: string[] | null;
   payees: string[] | null;
 }>;
 
 export default function Create({
   errorCode,
-  merchants,
   payees,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
@@ -40,33 +34,34 @@ export default function Create({
     return <Error statusCode={errorCode} />;
   }
 
-  async function createMerchant(values: InitialValues) {
+  async function createMerchant(
+    values: InitialValues,
+    helpers: FormikHelpers<InitialValues>,
+  ) {
     const response = await fetch(`/api/merchant`, {
       method: "POST",
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        ...values,
+        merchant: values.merchant.toUpperCase(),
+      }),
     });
     if (!response.ok) {
-      alert("Error creating merchant");
+      if (response.status === 409) {
+        helpers.setFieldError("merchant", "Merchant already exists");
+      } else {
+        alert("Error creating merchant");
+      }
     } else {
       router.back();
     }
   }
 
-  if (!payees || !merchants) {
+  if (!payees) {
     return <Error statusCode={500} />;
   }
 
   const schema = yup.object({
-    merchant: yup
-      .string()
-      .required()
-      .max(200)
-      .label("Merchant")
-      .test(
-        "unique",
-        "Merchant already exists",
-        (value) => !merchants.includes(value.toUpperCase()),
-      ),
+    merchant: yup.string().required().max(200).label("Merchant"),
     payee: yup.string().required().label("Payee"),
   });
 
@@ -85,9 +80,9 @@ export default function Create({
           <Formik
             initialValues={{ merchant: "", payee: payees[0] } as InitialValues}
             validationSchema={schema}
-            onSubmit={async (values, { setSubmitting }) => {
-              await createMerchant(values);
-              setSubmitting(false);
+            onSubmit={async (values, helpers) => {
+              await createMerchant(values, helpers);
+              helpers.setSubmitting(false);
             }}
             validateOnChange={false}
           >

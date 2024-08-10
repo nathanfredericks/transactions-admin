@@ -1,10 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { z } from "zod";
-import { getServerSession } from "next-auth";
+
 import { parseJsonPreprocessor } from "@/lib/utils";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { awsConfiguration, createOverride } from "@/lib/override";
+import { createOverride, getOverrides } from "@/lib/override";
 
 export const schema = z.object({
   merchant: z.string(),
@@ -19,6 +17,13 @@ export default async function handler(
   try {
     if (req.method === "POST") {
       const { merchant, payee } = await jsonSchema.parseAsync(req.body);
+      const overrides = (await getOverrides()) ?? [];
+      const merchants = overrides
+        .map(({ merchant }) => merchant)
+        .filter((merchant): merchant is string => !!merchant);
+      if (merchants.includes(merchant)) {
+        return res.status(409).json({});
+      }
       await createOverride(merchant, payee);
       res.status(201).json({
         merchant,
