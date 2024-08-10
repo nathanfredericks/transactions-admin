@@ -13,7 +13,7 @@ import {getOverrides} from "@/lib/override";
 
 export const getServerSideProps = (async () => {
   try {
-    const overrides = await getOverrides();
+    const overrides = await getOverrides() ?? [];
     const merchants = overrides
       .map(({ merchant }) => merchant)
       .filter((merchant): merchant is string => !!merchant);
