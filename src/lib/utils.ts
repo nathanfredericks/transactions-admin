@@ -1,4 +1,4 @@
-import {z, ZodIssueCode} from "zod";
+import { z, ZodIssueCode } from "zod";
 import * as ynab from "ynab";
 
 export function parseJsonPreprocessor(value: any, ctx: z.RefinementCtx) {
@@ -16,7 +16,9 @@ export function parseJsonPreprocessor(value: any, ctx: z.RefinementCtx) {
 }
 
 export async function getYNABPayees() {
-  const ynabAPI = new ynab.API(process.env.TRANSACTIONS_YNAB_ACCESS_TOKEN || "");
+  const ynabAPI = new ynab.API(
+    process.env.TRANSACTIONS_YNAB_ACCESS_TOKEN || "",
+  );
   const { data } = await ynabAPI.payees.getPayees(
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,

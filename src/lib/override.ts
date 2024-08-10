@@ -4,7 +4,7 @@ import {
   GetItemCommand,
   PutItemCommand,
   ScanCommand,
-  UpdateItemCommand
+  UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 
 export const awsConfiguration = {
@@ -17,23 +17,25 @@ export const awsConfiguration = {
 export const dynamoDBClient = new DynamoDBClient(awsConfiguration);
 
 export async function getOverrides() {
-  const {Items} = await dynamoDBClient.send(
-    new ScanCommand({TableName: "TransactionOverrides"}),
+  const { Items } = await dynamoDBClient.send(
+    new ScanCommand({ TableName: "TransactionOverrides" }),
   );
   return Items?.map((item) => ({
     merchant: item.merchant.S,
     payee: item.payee.S,
   }))
-    .filter((item): item is { merchant: string; payee: string } => !!item.merchant)
+    .filter(
+      (item): item is { merchant: string; payee: string } => !!item.merchant,
+    )
     .sort((a, b) => a.merchant.localeCompare(b.merchant));
 }
 
 export async function getOverride(merchant: string) {
-  const {Item} = await dynamoDBClient.send(
+  const { Item } = await dynamoDBClient.send(
     new GetItemCommand({
       TableName: "TransactionOverrides",
       Key: {
-        merchant: {S: merchant},
+        merchant: { S: merchant },
       },
     }),
   );
@@ -48,8 +50,8 @@ export async function createOverride(merchant: string, payee: string) {
     new PutItemCommand({
       TableName: "TransactionOverrides",
       Item: {
-        merchant: {S: merchant},
-        payee: {S: payee},
+        merchant: { S: merchant },
+        payee: { S: payee },
       },
     }),
   );
@@ -60,11 +62,11 @@ export async function updateOverride(merchant: string, payee: string) {
     new UpdateItemCommand({
       TableName: "TransactionOverrides",
       Key: {
-        merchant: {S: merchant},
+        merchant: { S: merchant },
       },
       UpdateExpression: "SET payee = :payee",
       ExpressionAttributeValues: {
-        ":payee": {S: payee},
+        ":payee": { S: payee },
       },
     }),
   );
@@ -75,7 +77,7 @@ export async function deleteOverride(merchant: string) {
     new DeleteItemCommand({
       TableName: "TransactionOverrides",
       Key: {
-        merchant: {S: merchant},
+        merchant: { S: merchant },
       },
     }),
   );

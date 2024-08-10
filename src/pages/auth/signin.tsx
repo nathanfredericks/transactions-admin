@@ -12,7 +12,7 @@ export default function SignIn() {
     } else if (status === "authenticated") {
       router.push("/");
     }
-  }, [router,status]);
+  }, [router, status]);
 
   return null;
 }

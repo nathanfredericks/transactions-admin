@@ -9,11 +9,11 @@ import MerchantForm from "../../components/MerchantForm";
 import { InitialValues } from "@/types";
 import { getYNABPayees } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import {getOverrides} from "@/lib/override";
+import { getOverrides } from "@/lib/override";
 
 export const getServerSideProps = (async () => {
   try {
-    const overrides = await getOverrides() ?? [];
+    const overrides = (await getOverrides()) ?? [];
     const merchants = overrides
       .map(({ merchant }) => merchant)
       .filter((merchant): merchant is string => !!merchant);

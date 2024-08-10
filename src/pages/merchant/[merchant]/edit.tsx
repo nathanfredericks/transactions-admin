@@ -9,7 +9,7 @@ import MerchantForm from "../../../components/MerchantForm";
 import { InitialValues, Override } from "@/types";
 import { getYNABPayees } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import {getOverride} from "@/lib/override";
+import { getOverride } from "@/lib/override";
 
 export const getServerSideProps = (async (context) => {
   const merchant = context.query.merchant as string;

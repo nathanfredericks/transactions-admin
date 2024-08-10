@@ -8,10 +8,10 @@ import personIcon from "bootstrap-icons/icons/person-fill.svg";
 import { useRouter } from "next/router";
 import { Override } from "@/types";
 import Navbar from "@/components/Navbar";
-import {getOverrides} from "@/lib/override";
+import { getOverrides } from "@/lib/override";
 
 export const getServerSideProps = (async () => {
-  const overrides = await getOverrides() ?? [];
+  const overrides = (await getOverrides()) ?? [];
   return { props: { overrides } };
 }) satisfies GetServerSideProps<{ overrides: Override[] }>;
 

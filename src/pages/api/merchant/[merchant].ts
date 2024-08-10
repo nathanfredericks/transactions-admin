@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import {parseJsonPreprocessor} from "@/lib/utils";
-import {deleteOverride, updateOverride} from "@/lib/override";
+import { parseJsonPreprocessor } from "@/lib/utils";
+import { deleteOverride, updateOverride } from "@/lib/override";
 export const schema = z.object({
   payee: z.string(),
 });
