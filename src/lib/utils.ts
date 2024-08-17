@@ -23,7 +23,8 @@ export async function getYNABPayees() {
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
     {
-      next: { revalidate: 300 },
+      cache: "force-cache",
+      next: { revalidate: 3600 },
     },
   );
   return data.payees
