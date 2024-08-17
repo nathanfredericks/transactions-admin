@@ -1,21 +1,6 @@
-import { z, ZodIssueCode } from "zod";
 import * as ynab from "ynab";
 
-export function parseJsonPreprocessor(value: any, ctx: z.RefinementCtx) {
-  if (typeof value === "string") {
-    try {
-      return JSON.parse(value);
-    } catch (e) {
-      ctx.addIssue({
-        code: ZodIssueCode.custom,
-        message: (e as Error).message,
-      });
-    }
-  }
-  return value;
-}
-
-export async function getYNABPayees() {
+export async function getPayees() {
   const ynabAPI = new ynab.API(
     process.env.TRANSACTIONS_YNAB_ACCESS_TOKEN || "",
   );
@@ -23,7 +8,6 @@ export async function getYNABPayees() {
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
     {
-      cache: "force-cache",
       next: { revalidate: 3600 },
     },
   );

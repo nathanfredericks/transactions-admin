@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { useFormikContext } from "formik";
-import { InitialValues, Override } from "@/types";
+import { InitialValues, Override } from "@/app/types";
 
 type Props = {
   override?: Override;
