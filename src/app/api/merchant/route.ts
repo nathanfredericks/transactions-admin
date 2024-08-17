@@ -17,13 +17,13 @@ export async function POST(request: NextRequest) {
       .filter((merchant): merchant is string => !!merchant);
     if (merchants.includes(merchant)) {
       return Response.json(
-        { revalidated: true, now: Date.now() },
+        {},
         { status: 409 },
       );
     }
     await createOverride(merchant, payee);
     revalidateTag("overrides");
-    return Response.json({ merchant, payee }, { status: 201 });
+    return Response.json({}, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return Response.json(error.errors, { status: 400 });

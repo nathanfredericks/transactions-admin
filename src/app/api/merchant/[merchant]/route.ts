@@ -10,13 +10,12 @@ export async function PATCH(
   const schema = z.object({
     payee: z.string(),
   });
-
   try {
     const json = await request.json();
     const { payee } = await schema.parseAsync(json);
     await updateOverride(params.merchant, payee);
     revalidateTag("overrides");
-    Response.json({ merchant: params.merchant, payee }, { status: 200 });
+    return Response.json({ merchant: params.merchant, payee }, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return Response.json(error.errors, { status: 400 });
