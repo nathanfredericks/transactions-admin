@@ -6,12 +6,17 @@ import Image from "next/image";
 import shopIcon from "bootstrap-icons/icons/shop.svg";
 import personIcon from "bootstrap-icons/icons/person-fill.svg";
 import { useRouter } from "next/router";
+import { unstable_cache } from "next/cache";
 import { Override } from "@/types";
 import Navbar from "@/components/Navbar";
 import { getOverrides } from "@/lib/override";
 
 export const getServerSideProps = (async () => {
-  const overrides = (await getOverrides()) ?? [];
+  const cachedGetOverrides = unstable_cache(getOverrides, undefined, {
+    tags: ["overrides"],
+    revalidate: 3600,
+  });
+  const overrides = (await cachedGetOverrides()) ?? [];
   return { props: { overrides } };
 }) satisfies GetServerSideProps<{ overrides: Override[] }>;
 
@@ -29,7 +34,7 @@ export default function Home({
     if (!response.ok) {
       alert("Error deleting merchant");
     } else {
-      router.reload();
+      await router.replace(router.asPath);
     }
   }
 
