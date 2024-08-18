@@ -16,7 +16,7 @@ async function getOverrides() {
     .filter(
       (item): item is { merchant: string; payee: string } => !!item.merchant,
     )
-    .sort((a, b) => a.merchant.localeCompare(b.merchant));
+    .sort((a, b) => a.payee.localeCompare(b.payee));
 }
 
 export default async function Page() {

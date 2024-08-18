@@ -1,6 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
-export const awsConfiguration = {
+const awsConfiguration = {
   region: process.env.TRANSACTIONS_AWS_REGION,
   credentials: {
     accessKeyId: process.env.TRANSACTIONS_AWS_ACCESS_KEY_ID || "",

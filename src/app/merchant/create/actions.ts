@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { dynamoDBClient } from "@/app/utils/dynamodb";
 
 export async function createOverride(merchant: string, payee: string) {
-  throw new Error("failed");
   await dynamoDBClient.send(
     new PutItemCommand({
       TableName: "TransactionOverrides",
