@@ -2,6 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { dynamoDBClient } from "@/app/utils/dynamodb";
 import { InitialValues } from "@/app/types";
@@ -25,5 +26,6 @@ export async function putOverride(
       },
     }),
   );
+  revalidatePath("/");
   redirect("/");
 }
