@@ -1,0 +1,17 @@
+.ruleGroup:first-of-type {
+  border: unset !important;
+  background-color: unset !important;
+}
+
+.ruleGroup {
+  background-color: rgba(var(--bs-secondary-rgb), 0.05);
+}
+
+.ruleGroup .ruleGroup .ruleGroup-addGroup {
+  display: none;
+}
+
+.merchant .rule-value {
+  font-family: monospace;
+  text-transform: uppercase;
+}

@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import React from "react";
 import Navigation from "@/app/components/Navigation";
+import "./styles.css";
 
 export const metadata: Metadata = {
   title: "Transactions",

@@ -1,9 +1,37 @@
+// DynamoDB
+import type { RuleGroupType } from "react-querybuilder";
+
 export type Override = {
-  merchant: string | undefined;
-  payee: string | undefined;
+  id: string;
+  name: string;
+  payee: string;
+  category: string;
+  memo: string;
+  query: string;
 };
 
+// YNAB
+export type Payee = {
+  id: string;
+  name: string;
+};
+
+export type CategoryGroup = {
+  id: string;
+  name: string;
+  categories: Category[];
+};
+
+type Category = {
+  id: string;
+  name: string;
+};
+
+// Formik
 export type InitialValues = {
-  merchant: string;
+  name: string;
   payee: string;
+  category: string;
+  memo: string;
+  query: RuleGroupType;
 };

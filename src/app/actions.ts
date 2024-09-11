@@ -4,12 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { dynamoDBClient } from "@/app/utils/dynamodb";
 
-export async function deleteOverride(merchant?: string) {
+export async function deleteOverride(id: string) {
   await dynamoDBClient.send(
     new DeleteItemCommand({
       TableName: "TransactionOverrides",
       Key: {
-        merchant: { S: merchant || "" },
+        id: { S: id },
       },
     }),
   );
