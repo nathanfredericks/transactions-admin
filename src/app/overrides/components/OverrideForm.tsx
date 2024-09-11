@@ -2,6 +2,7 @@
 import * as yup from "yup";
 import { Formik, type FormikProps } from "formik";
 import { Button, Card, Form } from "react-bootstrap";
+import Link from "next/link";
 import NewTransactionForm from "@/app/overrides/components/NewTransactionForm";
 import type { CategoryGroup, InitialValues, Payee } from "@/app/types";
 import { TransactionQueryBuilder } from "@/app/overrides/components/TransactionQueryBuilder";
@@ -48,6 +49,7 @@ export function OverrideForm(props: Props) {
                 isInvalid={!!errors.name}
                 name="name"
                 onChange={handleChange}
+                type="text"
                 value={values.name}
               />
             </Form.Group>
@@ -70,7 +72,12 @@ export function OverrideForm(props: Props) {
               </Card.Body>
             </Card>
 
-            <div className="d-inline-flex justify-content-end">
+            <div className="d-inline-flex column-gap-2 justify-content-end">
+              <Link href="/">
+                <Button type="reset" variant="secondary">
+                  Cancel
+                </Button>
+              </Link>
               <Button
                 disabled={isSubmitting || !dirty}
                 onClick={submitForm}
