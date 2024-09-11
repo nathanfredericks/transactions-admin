@@ -7,9 +7,6 @@ export async function getPayees() {
   const { data } = await ynabAPI.payees.getPayees(
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
-    {
-      next: { revalidate: 3600 },
-    },
   );
   return data.payees
     .filter((payee) => !payee.transfer_account_id && !payee.deleted)
@@ -35,9 +32,6 @@ export async function getCategories() {
   const { data } = await ynabAPI.categories.getCategories(
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
-    {
-      next: { revalidate: 3600 },
-    },
   );
   return data.category_groups
     .filter((group) => !group.deleted)
