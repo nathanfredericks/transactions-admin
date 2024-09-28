@@ -5,8 +5,6 @@ import React from "react";
 import Navigation from "@/app/components/Navigation";
 import "./styles.css";
 
-export const fetchCache = "force-no-store";
-
 export const metadata: Metadata = {
   title: "Transactions",
 };
