@@ -5,11 +5,8 @@ import {
   type Field,
   QueryBuilder,
   type RuleGroupType,
-  ValueEditor,
-  type ValueEditorProps,
 } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder-layout.css";
-import { Form } from "react-bootstrap";
 
 type Props = {
   query: RuleGroupType;
@@ -99,21 +96,6 @@ export function TransactionQueryBuilder(props: Props) {
         removeGroupAction: (props) => (
           <ActionElement {...props} label="Remove" />
         ),
-        valueEditor: (props: ValueEditorProps) => {
-          /* eslint-disable react/prop-types */
-          if (props.field === "merchant") {
-            return (
-              <Form.Control
-                className="rule-value w-50"
-                defaultValue={props.value}
-                maxLength={16}
-                onBlur={(event) => props.handleOnChange(event.target.value)}
-              />
-            );
-          }
-          /* eslint-enable react/prop-types */
-          return <ValueEditor {...props} />;
-        },
       }}
       fields={fields}
       onQueryChange={setQuery}
