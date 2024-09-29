@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
+import { unstable_cache } from "next/cache";
 import OverridesList from "@/app/components/OverridesList";
 import { dynamoDBClient } from "@/app/utils/dynamodb";
 
@@ -20,7 +21,11 @@ async function getOverrides() {
 }
 
 export default async function Page() {
-  const overrides = (await getOverrides()) ?? [];
+  const cachedOverrides = unstable_cache(getOverrides, undefined, {
+    revalidate: 3600,
+    tags: ["overrides"],
+  });
+  const overrides = (await cachedOverrides()) ?? [];
   const sortedOverrides = overrides.sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
   );
