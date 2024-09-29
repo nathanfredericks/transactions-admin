@@ -8,7 +8,7 @@ export async function getPayees() {
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
     {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     },
   );
   return data.payees
@@ -36,7 +36,7 @@ export async function getCategories() {
     process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
     undefined,
     {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     },
   );
   return data.category_groups
