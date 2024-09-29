@@ -7,6 +7,7 @@ import {
   type RuleGroupType,
 } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder-layout.css";
+import { BootstrapValueEditor } from "@/app/utils/BootstrapValueEditor";
 
 type Props = {
   query: RuleGroupType;
@@ -79,7 +80,7 @@ export function TransactionQueryBuilder(props: Props) {
         addGroup: "btn btn-primary",
         fields: "form-select w-25",
         operators: "form-select w-25",
-        value: "form-control w-50",
+        // value: "form-control w-50",
         removeRule: "btn btn-danger",
         removeGroup: "btn btn-danger",
       }}
@@ -96,6 +97,7 @@ export function TransactionQueryBuilder(props: Props) {
         removeGroupAction: (props) => (
           <ActionElement {...props} label="Remove" />
         ),
+        valueEditor: BootstrapValueEditor,
       }}
       fields={fields}
       onQueryChange={setQuery}
