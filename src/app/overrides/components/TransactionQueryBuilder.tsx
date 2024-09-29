@@ -47,7 +47,7 @@ export function TransactionQueryBuilder(props: Props) {
       inputType: "number",
       validator: (q) => typeof q === "number",
       operators: defaultOperators.filter((op) =>
-        ["=", "!=", "<", ">", "<=", "=>"].includes(op.name),
+        ["=", "!=", "<", ">", "<=", ">="].includes(op.name),
       ),
     },
     {
@@ -65,7 +65,7 @@ export function TransactionQueryBuilder(props: Props) {
       defaultValue: date.getDate(),
       validator: (q) => typeof q === "number" && q > 0 && q <= 31,
       operators: defaultOperators.filter((op) =>
-        ["=", "!=", "<", ">", "<=", "=>"].includes(op.name),
+        ["=", "!=", "<", ">", "<=", ">="].includes(op.name),
       ),
     },
   ];
