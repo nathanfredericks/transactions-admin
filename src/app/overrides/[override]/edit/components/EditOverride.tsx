@@ -40,7 +40,7 @@ export default function EditOverride(props: Props) {
             if (rule.field === "merchant") {
               return {
                 ...rule,
-                value: (rule.value as string).toUpperCase(),
+                value: (rule.value as string).toUpperCase().slice(0, 16),
               };
             }
             return rule;
