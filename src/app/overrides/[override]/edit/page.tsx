@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 export default async function Page({
   params,
 }: {
-  params: { override: string };
+  params: Promise<{ override: string }>;
 }) {
-  const override = decodeURIComponent(params.override);
+  const { override } = await params;
 
   const { Item } = await dynamoDBClient.send(
     new GetItemCommand({
       TableName: "TransactionOverrides",
       Key: {
-        id: { S: override },
+        id: { S: decodeURIComponent(override) },
       },
     }),
   );
