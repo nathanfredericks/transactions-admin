@@ -18,18 +18,18 @@ export function TransactionQueryBuilder(props: Props) {
   const { query, setQuery } = props;
 
   const months = [
-    { name: 1, label: "January" },
-    { name: 2, label: "February" },
-    { name: 3, label: "March" },
-    { name: 4, label: "April" },
-    { name: 5, label: "May" },
-    { name: 6, label: "June" },
-    { name: 7, label: "July" },
-    { name: 8, label: "August" },
-    { name: 9, label: "September" },
-    { name: 10, label: "October" },
-    { name: 11, label: "November" },
-    { name: 12, label: "December" },
+    { value: "1", name: "1", label: "January" },
+    { value: "2", name: "2", label: "February" },
+    { value: "3", name: "3", label: "March" },
+    { value: "4", name: "4", label: "April" },
+    { value: "5", name: "5", label: "May" },
+    { value: "6", name: "6", label: "June" },
+    { value: "7", name: "7", label: "July" },
+    { value: "8", name: "8", label: "August" },
+    { value: "9", name: "9", label: "September" },
+    { value: "10", name: "10", label: "October" },
+    { value: "11", name: "11", label: "November" },
+    { value: "12", name: "12", label: "December" },
   ];
   const date = new Date();
   const fields: Field[] = [
