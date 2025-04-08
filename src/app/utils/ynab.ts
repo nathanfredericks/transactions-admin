@@ -1,15 +1,9 @@
 import * as ynab from "ynab";
 
 export async function getPayees() {
-  const ynabAPI = new ynab.API(
-    process.env.TRANSACTIONS_YNAB_ACCESS_TOKEN || "",
-  );
+  const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN || "");
   const { data } = await ynabAPI.payees.getPayees(
-    process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
-    undefined,
-    {
-      next: { revalidate: 300 },
-    },
+    process.env.YNAB_BUDGET_ID || "",
   );
   return data.payees
     .filter((payee) => !payee.transfer_account_id && !payee.deleted)
@@ -29,15 +23,9 @@ export async function getPayees() {
 }
 
 export async function getCategories() {
-  const ynabAPI = new ynab.API(
-    process.env.TRANSACTIONS_YNAB_ACCESS_TOKEN || "",
-  );
+  const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN || "");
   const { data } = await ynabAPI.categories.getCategories(
-    process.env.TRANSACTIONS_YNAB_BUDGET_ID || "",
-    undefined,
-    {
-      next: { revalidate: 300 },
-    },
+    process.env.YNAB_BUDGET_ID || "",
   );
   return data.category_groups
     .filter((group) => !group.deleted)

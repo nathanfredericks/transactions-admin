@@ -1,9 +1,6 @@
 import * as React from "react";
 import type { ValueEditorProps } from "react-querybuilder";
-import {
-  standardClassnames,
-  ValueEditor,
-} from "react-querybuilder";
+import { standardClassnames, ValueEditor } from "react-querybuilder";
 
 export const BootstrapValueEditor = (
   props: ValueEditorProps,
