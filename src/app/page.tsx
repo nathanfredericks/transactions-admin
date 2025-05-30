@@ -1,9 +1,10 @@
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
-import { unstable_cache } from "next/cache";
 import OverridesList from "@/app/components/OverridesList";
 import { dynamoDBClient } from "@/app/utils/dynamodb";
+
+export const dynamic = "force-dynamic";
 
 async function getOverrides() {
   const { Items } = await dynamoDBClient.send(
