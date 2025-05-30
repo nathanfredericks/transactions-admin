@@ -5,11 +5,9 @@ export async function getPayees() {
     if (!process.env.YNAB_ACCESS_TOKEN || !process.env.YNAB_BUDGET_ID) {
       return [];
     }
-    
+
     const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN);
-    const { data } = await ynabAPI.payees.getPayees(
-      process.env.YNAB_BUDGET_ID,
-    );
+    const { data } = await ynabAPI.payees.getPayees(process.env.YNAB_BUDGET_ID);
     return data.payees
       .filter((payee) => !payee.transfer_account_id && !payee.deleted)
       .filter(
@@ -35,7 +33,7 @@ export async function getCategories() {
     if (!process.env.YNAB_ACCESS_TOKEN || !process.env.YNAB_BUDGET_ID) {
       return [];
     }
-    
+
     const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN);
     const { data } = await ynabAPI.categories.getCategories(
       process.env.YNAB_BUDGET_ID,
@@ -58,7 +56,7 @@ export async function getCategories() {
           .map(({ id, name }) => ({ id, name })),
       }));
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error("Error fetching categories:", error);
     return [];
   }
 }
