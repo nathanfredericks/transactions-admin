@@ -2,7 +2,7 @@
 import { Button, ListGroup } from "react-bootstrap";
 import Link from "next/link";
 import type { Override } from "@/app/types";
-import { deleteOverride } from "@/app/actions";
+import { DeleteOverrideButton } from "@/app/overrides/[override]/edit/components/DeleteOverrideButton";
 
 type Props = {
   overrides: Override[];
@@ -25,9 +25,7 @@ export default function OverridesList(props: Props) {
               <Link href={`/overrides/${id}/edit`}>
                 <Button variant="secondary">Edit</Button>
               </Link>
-              <Button onClick={() => deleteOverride(id)} variant="danger">
-                Delete
-              </Button>
+              <DeleteOverrideButton id={id} />
             </div>
           </ListGroup.Item>
         ))}

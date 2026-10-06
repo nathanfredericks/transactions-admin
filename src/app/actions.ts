@@ -2,6 +2,10 @@
 import { redirect } from "next/navigation";
 import { removeOverride } from "@/app/utils/overrides";
 export async function deleteOverride(id: string) {
-  await removeOverride(id);
+  try {
+    await removeOverride(id);
+  } catch {
+    return { error: "Unable to delete override. Please try again." };
+  }
   redirect("/");
 }

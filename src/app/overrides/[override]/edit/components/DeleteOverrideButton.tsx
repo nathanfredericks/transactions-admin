@@ -1,6 +1,7 @@
 "use client";
 
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Alert, Button } from "react-bootstrap";
 import { deleteOverride } from "@/app/actions";
 
 type Props = {
@@ -10,9 +11,33 @@ type Props = {
 export function DeleteOverrideButton(props: Props) {
   const { id } = props;
 
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
   return (
-    <Button onClick={() => deleteOverride(id)} variant="danger">
-      Delete
-    </Button>
+    <div>
+      {error && (
+        <Alert variant="danger" role="alert">
+          {error}
+        </Alert>
+      )}
+      <Button
+        disabled={pending}
+        onClick={async () => {
+          setPending(true);
+          setError("");
+          try {
+            const result = await deleteOverride(id);
+            if (result?.error) setError(result.error);
+          } catch {
+            setError("Unable to delete override. Please try again.");
+          } finally {
+            setPending(false);
+          }
+        }}
+        variant="danger"
+      >
+        Delete
+      </Button>
+    </div>
   );
 }
