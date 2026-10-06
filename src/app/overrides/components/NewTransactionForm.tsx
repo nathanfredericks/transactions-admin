@@ -9,11 +9,10 @@ type Props = {
 
 export default function NewTransactionForm(props: Props) {
   const { categoryGroups, payees } = props;
-  const { values, handleChange, errors, handleSubmit } =
-    useFormikContext<InitialValues>();
+  const { values, handleChange, errors } = useFormikContext<InitialValues>();
 
   return (
-    <Form noValidate onSubmit={handleSubmit}>
+    <div>
       <Form.Group className="mb-3" controlId="payee">
         <Form.Label>Payee</Form.Label>
         <Form.Select
@@ -56,45 +55,27 @@ export default function NewTransactionForm(props: Props) {
           ))}
         </Form.Select>
         <Form.Control.Feedback type="invalid">
-          {errors.payee}
+          {errors.category}
         </Form.Control.Feedback>
       </Form.Group>
 
-      <div>
-        <h5>Templating</h5>
-        <div className="form-info">
-          <p>
-            Memo supports templating with{" "}
-            <a href="https://handlebarsjs.com/">Handlebars</a>.
-          </p>
-          <strong>Variables</strong>
-          <ul>
-            <li>
-              <code>{"{{date}}"}</code> - Today&apos;s date in{" "}
-              <code>YYYY-MM-DD</code> format
-            </li>
-          </ul>
-          <strong>Helpers</strong>
-          <ul>
-            <li>
-              <code>{"formatDate"}</code> - Format date with{" "}
-              <a href="https://moment.github.io/luxon/#/">Luxon</a>
-            </li>
-            <li>
-              <code>{"subtractMonthFromDate"}</code> - Subtract one month from
-              date
-            </li>
-          </ul>
-          <strong>Example</strong>
-          <ul>
-            <li>
-              <code>
-                {'{{formatDate (subtractMonthFromDate date) "MMMM yyyy"}}'}
-              </code>{" "}
-              - One month ago in <code>MMMM yyyy</code> format
-            </li>
-          </ul>
-        </div>
+      <div className="form-info">
+        <h5>Memo templates</h5>
+        <p>
+          Use Go templates. <code>{"{{.Date}}"}</code> is the transaction date
+          (YYYY-MM-DD).
+        </p>
+        <p>
+          Format dates with Go layouts:{" "}
+          <code>{'{{formatDate .Date "January 2006"}}'}</code>.
+        </p>
+        <p>
+          Previous month:{" "}
+          <code>
+            {'{{formatDate (subtractMonthFromDate .Date) "January 2006"}}'}
+          </code>
+          . Month-end dates are clamped to the last valid day.
+        </p>
       </div>
       <Form.Group className="mb-3" controlId="memo">
         <Form.Label>Memo</Form.Label>
@@ -105,6 +86,6 @@ export default function NewTransactionForm(props: Props) {
           value={values.memo}
         />
       </Form.Group>
-    </Form>
+    </div>
   );
 }

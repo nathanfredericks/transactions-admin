@@ -8,6 +8,7 @@ export type Override = {
   category: string;
   memo: string;
   query: string;
+  updatedAt: string;
 };
 
 // YNAB

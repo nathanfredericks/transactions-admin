@@ -7,6 +7,7 @@ import {
   type RuleGroupType,
 } from "react-querybuilder";
 import "react-querybuilder/dist/query-builder-layout.css";
+import { validNumber } from "@/app/utils/rules";
 import { BootstrapValueEditor } from "@/app/utils/BootstrapValueEditor";
 
 type Props = {
@@ -46,7 +47,7 @@ export function TransactionQueryBuilder(props: Props) {
       name: "amount",
       label: "Amount",
       inputType: "number",
-      validator: (q) => typeof q === "number",
+      validator: (q) => validNumber(q.value, "amount"),
       operators: defaultOperators.filter((op) =>
         ["=", "!=", "<", ">", "<=", ">="].includes(op.name),
       ),
@@ -56,7 +57,7 @@ export function TransactionQueryBuilder(props: Props) {
       label: "Month",
       valueEditorType: "select",
       values: months,
-      defaultValue: date.getMonth(),
+      defaultValue: date.getMonth() + 1,
       operators: defaultOperators.filter((op) => ["=", "!="].includes(op.name)),
     },
     {
@@ -64,7 +65,7 @@ export function TransactionQueryBuilder(props: Props) {
       label: "Day",
       inputType: "number",
       defaultValue: date.getDate(),
-      validator: (q) => typeof q === "number" && q > 0 && q <= 31,
+      validator: (q) => validNumber(q.value, "day"),
       operators: defaultOperators.filter((op) =>
         ["=", "!=", "<", ">", "<=", ">="].includes(op.name),
       ),
@@ -86,7 +87,6 @@ export function TransactionQueryBuilder(props: Props) {
       }}
       controlElements={{
         addGroupAction: (props) =>
-          // eslint-disable-next-line react/prop-types
           props.level === 0 ? (
             <ActionElement {...props} label="Add group" />
           ) : null,

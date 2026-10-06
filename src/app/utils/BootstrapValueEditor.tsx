@@ -13,7 +13,6 @@ export const BootstrapValueEditor = (
         <input
           className={`${standardClassnames.valueListItem} form-control w-50 ${props.field === "merchant" ? "text-uppercase font-monospace" : ""}`}
           disabled={props.disabled}
-          maxLength={props.field === "merchant" ? 16 : undefined}
           onChange={(e) => props.handleOnChange(e.target.value)}
           placeholder={placeHolderText}
           type="text"

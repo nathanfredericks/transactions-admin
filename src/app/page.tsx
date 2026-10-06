@@ -1,31 +1,11 @@
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import OverridesList from "@/app/components/OverridesList";
-import { dynamoDBClient } from "@/app/utils/dynamodb";
-
+import { listOverrides } from "@/app/utils/overrides";
 export const dynamic = "force-dynamic";
 
-async function getOverrides() {
-  const { Items } = await dynamoDBClient.send(
-    new ScanCommand({ TableName: "TransactionOverrides" }),
-  );
-  return Items?.map((item) => ({
-    id: item.id?.S || "",
-    name: item.name?.S || "",
-    payee: item.payee?.S || "",
-    category: item.category?.S || "",
-    memo: item.memo?.S || "",
-    query: item.query?.S || "",
-    updatedAt: item.updatedAt?.S || "",
-  }));
-}
-
 export default async function Page() {
-  const overrides = (await getOverrides()) ?? [];
-  const sortedOverrides = overrides.sort(
-    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-  );
+  const sortedOverrides = await listOverrides();
 
   return (
     <>

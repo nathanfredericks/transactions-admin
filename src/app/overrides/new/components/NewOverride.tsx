@@ -1,5 +1,4 @@
 "use client";
-import { formatQuery, transformQuery } from "react-querybuilder";
 import { CategoryGroup, InitialValues, Payee } from "@/app/types";
 import { OverrideForm } from "@/app/overrides/components/OverrideForm";
 import { putOverride } from "@/app/overrides/new/actions";
@@ -28,22 +27,8 @@ export default function NewOverride(props: Props) {
       categoryGroups={categoryGroups}
       initialValues={initialValues}
       onSubmit={async (values) => {
-        // Transform the merchant to uppercase
-        const transformedQuery = transformQuery(values.query, {
-          ruleProcessor: (rule) => {
-            if (rule.field === "merchant") {
-              return {
-                ...rule,
-                value: (rule.value as string).toUpperCase().slice(0, 16),
-              };
-            }
-            return rule;
-          },
-        });
-        const formattedQuery = JSON.stringify(
-          formatQuery(transformedQuery, "jsonlogic"),
-        );
-        await putOverride(values, formattedQuery);
+        const result = await putOverride(values);
+        if (result?.error) throw new Error(result.error);
       }}
       payees={payees}
     />

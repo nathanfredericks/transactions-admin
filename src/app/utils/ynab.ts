@@ -3,10 +3,13 @@ import * as ynab from "ynab";
 export async function getPayees() {
   try {
     if (!process.env.YNAB_ACCESS_TOKEN || !process.env.YNAB_BUDGET_ID) {
-      return [];
+      throw new Error("YNAB access token and budget must be configured.");
     }
 
-    const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN);
+    const ynabAPI = new ynab.API(
+      process.env.YNAB_ACCESS_TOKEN,
+      process.env.YNAB_API_URL,
+    );
     const { data } = await ynabAPI.payees.getPayees(process.env.YNAB_BUDGET_ID);
     return data.payees
       .filter((payee) => !payee.transfer_account_id && !payee.deleted)
@@ -23,18 +26,23 @@ export async function getPayees() {
         name: payee.name,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
-  } catch (error) {
-    return [];
+  } catch {
+    throw new Error(
+      "Unable to load YNAB payees. Check configuration and retry.",
+    );
   }
 }
 
 export async function getCategories() {
   try {
     if (!process.env.YNAB_ACCESS_TOKEN || !process.env.YNAB_BUDGET_ID) {
-      return [];
+      throw new Error("YNAB access token and budget must be configured.");
     }
 
-    const ynabAPI = new ynab.API(process.env.YNAB_ACCESS_TOKEN);
+    const ynabAPI = new ynab.API(
+      process.env.YNAB_ACCESS_TOKEN,
+      process.env.YNAB_API_URL,
+    );
     const { data } = await ynabAPI.categories.getCategories(
       process.env.YNAB_BUDGET_ID,
     );
@@ -57,6 +65,8 @@ export async function getCategories() {
       }));
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return [];
+    throw new Error(
+      "Unable to load YNAB categories. Check configuration and retry.",
+    );
   }
 }

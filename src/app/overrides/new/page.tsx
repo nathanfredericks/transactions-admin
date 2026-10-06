@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { getCategories, getPayees } from "@/app/utils/ynab";
 import NewOverride from "@/app/overrides/new/components/NewOverride";

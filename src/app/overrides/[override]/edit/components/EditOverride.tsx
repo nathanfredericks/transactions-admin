@@ -1,5 +1,4 @@
 "use client";
-import { formatQuery, transformQuery } from "react-querybuilder";
 import { parseJsonLogic } from "react-querybuilder/parseJsonLogic";
 import { useParams } from "next/navigation";
 import { CategoryGroup, InitialValues, Payee } from "@/app/types";
@@ -34,22 +33,8 @@ export default function EditOverride(props: Props) {
       categoryGroups={categoryGroups}
       initialValues={initialValues}
       onSubmit={async (values) => {
-        // Transform the merchant to uppercase
-        const transformedQuery = transformQuery(values.query, {
-          ruleProcessor: (rule) => {
-            if (rule.field === "merchant") {
-              return {
-                ...rule,
-                value: (rule.value as string).toUpperCase().slice(0, 16),
-              };
-            }
-            return rule;
-          },
-        });
-        const formattedQuery = JSON.stringify(
-          formatQuery(transformedQuery, "jsonlogic"),
-        );
-        await updateOverride(id as string, values, formattedQuery);
+        const result = await updateOverride(id as string, values);
+        if (result?.error) throw new Error(result.error);
       }}
       payees={payees}
     />
